@@ -1,5 +1,6 @@
 import org.basex.server.ClientSession;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -13,10 +14,8 @@ public class Main {
         ClientSession session = null;
         boolean salir = false;
 
-
-        while(salir){
+        while(!salir){
             try{
-                session = new ClientSession("localhost", 1984, "admin", "admin");
 
                 System.out.println("Ejercicios de practica ");
                 System.out.println("1.- Cuantos paises hay en <<factbook.xml>>");
@@ -80,6 +79,5 @@ public class Main {
                 ex.printStackTrace();
             }
         }
-
     }
 }
