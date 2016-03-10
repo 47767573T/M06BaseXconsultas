@@ -1,4 +1,6 @@
-import org.basex.server.ClientSession;
+
+
+import org.basex.api.client.ClientSession;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -9,14 +11,20 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scn = new Scanner(System.in);
+
         ClientSession session = null;
+
+        System.out.println("Entrando");
+        session = new ClientSession("localhost", 1984, "admin", "admin");
+        System.out.println("Dentro...");
+
+
         boolean salir = false;
 
         while(!salir){
             try{
-
                 System.out.println("Ejercicios de practica ");
                 System.out.println("1.- Cuantos paises hay en <<factbook.xml>>");
                 System.out.println("2.- Cuantos paises hay");
@@ -28,19 +36,20 @@ public class Main {
                 System.out.println("8.- Salir");
 
                 System.out.println("Elija consulta");
-                scn.nextLine();
 
-                switch (scn.nextLine()){
-                    case "1":
-                        String cad = "for $doc in collection('mondial.xml') ";
-                        cad = cad + "where document-uri($doc) = \"mondial.xml\" ";
-                        cad = cad + "return $doc//name)";
+                switch (scn.nextInt()){
+                    case 1:
 
+                        System.out.println("entrando");
+                        String cad = "for $doc in collection('Factbook.xml') ";
+                        cad = cad + "return $doc//name";
+
+                        System.out.println("Ejecutar: "+cad);
                         System.out.println(session.query(cad).execute());
 
                         break;
 
-                    case "2":
+                    /*case "2":
 
                         break;
 
@@ -68,7 +77,7 @@ public class Main {
                         System.out.println("BYE BYE");
                         session.close();
                         salir = true;
-                        break;
+                        break;*/
 
                     default:
                         System.out.println("Ha elegido una opcion incorrecta");
