@@ -1,5 +1,4 @@
 
-
 import org.basex.api.client.ClientSession;
 
 import java.io.IOException;
@@ -11,22 +10,23 @@ import java.util.Scanner;
 public class Main {
 
 
+
     public static void main(String[] args) throws IOException {
         Scanner scn = new Scanner(System.in);
 
         ClientSession session = null;
-
-        System.out.println("Entrando");
+        System.out.print("Entrando...");
         session = new ClientSession("localhost", 1984, "admin", "admin");
-        System.out.println("Dentro...");
+        System.out.println(" ...Dentro");
 
 
         boolean salir = false;
+        String query = "";
 
         while(!salir){
             try{
-                System.out.println("Ejercicios de practica ");
-                System.out.println("1.- Cuantos paises hay en <<factbook.xml>>");
+                System.out.println("\nEjercicios de practica ");
+                System.out.println("1.- Que paises hay en <<factbook.xml>>");
                 System.out.println("2.- Cuantos paises hay");
                 System.out.println("3.- Cual es la informacion sobre Alemania");
                 System.out.println("4.- Cuanta gente vive en Uganda");
@@ -39,48 +39,48 @@ public class Main {
 
                 switch (scn.nextInt()){
                     case 1:
-
-                        System.out.println("entrando");
-                        String cad = "for $doc in collection('Factbook.xml') ";
-                        cad = cad + "return $doc//name";
-
-                        System.out.println("Ejecutar: "+cad);
-                        System.out.println(session.query(cad).execute());
-
+                        query = "collection('Factbook.xml')/factbook/record/country";
+                        toQuery(session, query);
                         break;
 
-                    /*case "2":
-
+                    case 2:
+                        query = "collection('mondial.xml')/count(/mondial/country)";
+                        toQuery(session, query);
                         break;
 
-                    case "3":
-
+                    case 3:
+                        query = "collection('mondial.xml')/mondial/country[name=\"Germany\"]";
+                        toQuery(session, query);
                         break;
 
-                    case "4":
-
+                    case 4:
+                        query = "collection('mondial.xml')/mondial/country[name=\"Uganda\"]/population[last()]/text()";
+                        toQuery(session, query);
                         break;
 
-                    case "5":
-
+                    case 5:
+                        query = "collection('mondial.xml')/mondial/country[name=\"Peru\"]/province/city/name/text()";
+                        toQuery(session, query);
                         break;
 
-                    case "6":
-
+                    case 6:
+                        query = "collection('mondial.xml')/mondial/country/province[name=\"Shanghai\"]/population[last()]/text()";
+                        toQuery(session, query);
                         break;
 
-                    case "7":
-
+                    case 7:
+                        query ="collection('mondial.xml')/mondial/country[name=\"Cyprus\"]/@car_code";
+                        toQuery(session, query);
                         break;
 
-                    case "8":
+                    case 8:
                         System.out.println("BYE BYE");
                         session.close();
                         salir = true;
-                        break;*/
+                        break;
 
                     default:
-                        System.out.println("Ha elegido una opcion incorrecta");
+                        System.out.println("Ha elegido una opción incorrecta");
                         break;
                 }
 
@@ -89,4 +89,18 @@ public class Main {
             }
         }
     }
+
+    /**
+     * realiza consultas con la sesion concretada e imprime por pantalla
+     * @param session sesion de conexion para realizar la consulta
+     * @param q query de consulta
+     */
+    public static void toQuery (ClientSession session, String q){
+        try {
+            System.out.println("Resultado:\n"+session.query(q).execute());
+        } catch (IOException e) {
+            System.out.println("Error en conexión con la sesion: "+String.valueOf(e));
+        }
+    }
+
 }
